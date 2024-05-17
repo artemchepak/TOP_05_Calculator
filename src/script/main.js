@@ -1,5 +1,6 @@
 const display = document.querySelector('#display');
 const digits = document.querySelectorAll('.digit');
+const clearBtn = document.querySelector('#clear');
 let displayText = display.innerHTML;
 
 function getUserInput(key){
@@ -13,9 +14,15 @@ function getUserInput(key){
     display.innerHTML = displayText;
 }
 
+function clear() {
+    displayText = '0';  
+    display.innerHTML = displayText;
+}
 
 Array.from(digits).forEach(function (btn) {
     btn.addEventListener('click', (event) => {
         getUserInput(event.target);
     });
 });
+
+clearBtn.addEventListener('click', clear);
