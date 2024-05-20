@@ -84,7 +84,13 @@ function calculate() {
             break;
     }
 
-    displayText = result.toString();
+    if (result.toString().length > 15){
+        displayText = result.toString().substring(0,12) + 'err';
+    }
+    else {
+        displayText = result.toString();
+    }
+
     display.innerHTML = displayText;
     firstNumber = result.toString();
     secondNumber = '';
