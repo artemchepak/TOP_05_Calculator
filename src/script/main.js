@@ -1,3 +1,5 @@
+//добавь кнопку equal и повесь на нее calculate
+
 const display = document.querySelector('#display');
 const digits = document.querySelectorAll('.digit');
 const clearBtn = document.querySelector('#clear');
@@ -24,21 +26,6 @@ function getUserInput(key) {
 
 function getOperation(key) {
     operation = key.getAttribute('id');
-
-    switch (operation) {
-        case 'divide':
-            console.log('divide');
-            break;
-        case 'multiply':
-            console.log('multiply');
-            break;
-        case 'subtract':
-            console.log('subtract');
-            break;
-        case 'add':
-            console.log('add');
-            break;
-    }
 }
 
 function updateDisplay(key) {
@@ -55,6 +42,9 @@ function updateDisplay(key) {
 function clear() {
     displayText = '0';
     display.innerHTML = displayText;
+    firstNumber = '';
+    secondNumber = '';
+
 }
 
 function add() {
@@ -71,6 +61,28 @@ function multiply() {
 
 function divide() {
 
+}
+
+function calculate() {
+
+    if (firstNumber === undefined || secondNumber === undefined) {
+        return;
+    }
+
+    switch (operation) {
+        case 'divide':
+            console.log('divide');
+            divide();
+        case 'multiply':
+            multiply();
+            break;
+        case 'subtract':
+            subtract();
+            break;
+        case 'add':
+            add();
+            break;
+    }
 }
 
 Array.from(digits).forEach(function (btn) {
