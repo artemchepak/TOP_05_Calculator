@@ -14,7 +14,12 @@ function updateDisplay(value) {
         displayText = value;
         newCalculation = false;
     } else if (displayText.length < 15) {
-        displayText += value;
+        if (secondNumber === ''){
+            displayText += value;
+        }
+        else {
+            displayText = secondNumber;
+        }
     }
     display.innerHTML = displayText;
 }
