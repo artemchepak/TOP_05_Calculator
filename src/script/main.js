@@ -3,39 +3,49 @@ const digits = document.querySelectorAll('.digit');
 const clearBtn = document.querySelector('#clear');
 const operationBtns = document.querySelectorAll('.operation');
 const equalBtn = document.querySelector('#equals');
-let displayText = display.innerHTML;
+let displayText = '0';
 let firstNumber = '';
 let secondNumber = '';
 let operation;
-let result;
+let newCalculation = false;
+
+function updateDisplay(value) {
+    if (displayText === '0' || newCalculation) {
+        displayText = value;
+        newCalculation = false;
+    } else if (displayText.length < 15) {
+        displayText += value;
+    }
+    display.innerHTML = displayText;
+}
 
 function getUserInput(key) {
-    if (operation === undefined) {
-        firstNumber += key.innerHTML;
-        updateDisplay(key);
-        console.log(`first number is ${firstNumber}`);
-    }
-    else {
-        display.innerHTML = '';
-        secondNumber += key.innerHTML;
-        display.innerHTML = secondNumber;
-        console.log(`second number is ${secondNumber}`);
+    const value = key.innerHTML;
+    if (!operation) {
+        if (newCalculation) {
+            firstNumber = '';
+            newCalculation = false;
+        }
+        firstNumber += value;
+        updateDisplay(value);
+    } else {
+        if (!secondNumber && displayText !== firstNumber) {
+            displayText = '';
+        }
+        secondNumber += value;
+        updateDisplay(value);
     }
 }
 
 function getOperation(key) {
-    operation = key.getAttribute('id');
-}
-
-function updateDisplay(key) {
-    if (displayText === '0') {
-        displayText = '';
+    if (firstNumber) {
+        if (secondNumber) {
+            calculate();
+        }
+        operation = key.id;
+        displayText = firstNumber;
+        newCalculation = false;
     }
-    else if (displayText.length === 15) {
-        return;
-    }
-    displayText += key.innerHTML;
-    display.innerHTML = displayText;
 }
 
 function clear() {
@@ -43,59 +53,46 @@ function clear() {
     display.innerHTML = displayText;
     firstNumber = '';
     secondNumber = '';
-
-}
-
-function add() {
-    return parseInt(firstNumber) + parseInt(secondNumber);
-}
-
-function subtract() {
-    return parseInt(firstNumber) - parseInt(secondNumber);
-}
-
-function multiply() {
-    return parseInt(firstNumber) * parseInt(secondNumber);
-}
-
-function divide() {
-    return parseInt(firstNumber) / parseInt(secondNumber);
+    operation = undefined;
+    newCalculation = false;
 }
 
 function calculate() {
+    if (!firstNumber || !secondNumber || !operation) return;
 
-    if (firstNumber === undefined || secondNumber === undefined) {
-        return;
-    }
+    const num1 = parseFloat(firstNumber);
+    const num2 = parseFloat(secondNumber);
+    let result;
 
     switch (operation) {
         case 'divide':
-            result = divide();
+            result = num1 / num2;
             break;
         case 'multiply':
-            result = multiply();
+            result = num1 * num2;
             break;
         case 'subtract':
-            result = subtract();
+            result = num1 - num2;
             break;
         case 'add':
-            result = add();
+            result = num1 + num2;
             break;
     }
 
-    display.innerHTML = result;
+    displayText = result.toString();
+    display.innerHTML = displayText;
+    firstNumber = result.toString();
+    secondNumber = '';
+    operation = undefined;
+    newCalculation = true;
 }
 
-Array.from(digits).forEach(function (btn) {
-    btn.addEventListener('click', (event) => {
-        getUserInput(event.target);
-    });
+digits.forEach(btn => {
+    btn.addEventListener('click', event => getUserInput(event.target));
 });
 
-Array.from(operationBtns).forEach(function (btn) {
-    btn.addEventListener('click', (event) => {
-        getOperation(event.target);
-    });
+operationBtns.forEach(btn => {
+    btn.addEventListener('click', event => getOperation(event.target));
 });
 
 clearBtn.addEventListener('click', clear);
