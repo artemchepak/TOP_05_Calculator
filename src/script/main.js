@@ -3,6 +3,7 @@ const digits = document.querySelectorAll('.digit');
 const clearBtn = document.querySelector('#clear');
 const operationBtns = document.querySelectorAll('.operation');
 const equalBtn = document.querySelector('#equals');
+const backspaceBtn = document.querySelector('#backspace');
 let displayText = '0';
 let firstNumber = '';
 let secondNumber = '';
@@ -14,7 +15,7 @@ function updateDisplay(value) {
         displayText = value;
         newCalculation = false;
     } else if (displayText.length < 15) {
-        if (secondNumber === ''){
+        if (secondNumber === '') {
             displayText += value;
         }
         else {
@@ -62,6 +63,21 @@ function clear() {
     newCalculation = false;
 }
 
+function backspace() {
+    if (displayText.length > 1) {
+        displayText = displayText.slice(0, -1);
+    } else {
+        displayText = '0';
+    }
+    display.innerHTML = displayText;
+
+    if (!operation) {
+        firstNumber = displayText;
+    } else {
+        secondNumber = displayText;
+    }
+}
+
 function calculate() {
     if (!firstNumber || !secondNumber || !operation) return;
 
@@ -84,8 +100,8 @@ function calculate() {
             break;
     }
 
-    if (result.toString().length > 15){
-        displayText = result.toString().substring(0,12) + 'err';
+    if (result.toString().length > 15) {
+        displayText = result.toString().substring(0, 12) + 'err';
     }
     else {
         displayText = result.toString();
@@ -107,4 +123,5 @@ operationBtns.forEach(btn => {
 });
 
 clearBtn.addEventListener('click', clear);
+backspaceBtn.addEventListener('click', backspace);
 equalBtn.addEventListener('click', calculate);
