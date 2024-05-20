@@ -4,6 +4,7 @@ const display = document.querySelector('#display');
 const digits = document.querySelectorAll('.digit');
 const clearBtn = document.querySelector('#clear');
 const operationBtns = document.querySelectorAll('.operation');
+const equalBtn = document.querySelector('#equals');
 let displayText = display.innerHTML;
 let firstNumber = '';
 let secondNumber = '';
@@ -12,13 +13,13 @@ let result;
 
 function getUserInput(key) {
     if (operation === undefined) {
-        firstNumber += parseInt(key.innerHTML);
+        firstNumber += key.innerHTML;
         updateDisplay(key);
         console.log(`first number is ${firstNumber}`);
     }
     else {
-        clear();
-        secondNumber += parseInt(key.innerHTML);
+        display.innerHTML = '';
+        secondNumber += key.innerHTML;
         display.innerHTML = secondNumber;
         console.log(`second number is ${secondNumber}`);
     }
@@ -48,19 +49,19 @@ function clear() {
 }
 
 function add() {
-
+    return parseInt(firstNumber) + parseInt(secondNumber);
 }
 
 function subtract() {
-
+    return parseInt(firstNumber) - parseInt(secondNumber);
 }
 
 function multiply() {
-
+    return parseInt(firstNumber) * parseInt(secondNumber);
 }
 
 function divide() {
-
+    return parseInt(firstNumber) / parseInt(secondNumber);
 }
 
 function calculate() {
@@ -69,20 +70,24 @@ function calculate() {
         return;
     }
 
+    let result = '';
+
     switch (operation) {
         case 'divide':
-            console.log('divide');
-            divide();
+            result = divide();
+            break;
         case 'multiply':
-            multiply();
+            result = multiply();
             break;
         case 'subtract':
-            subtract();
+            result = subtract();
             break;
         case 'add':
-            add();
+            result = add();
             break;
     }
+
+    display.innerHTML = result;
 }
 
 Array.from(digits).forEach(function (btn) {
@@ -98,3 +103,4 @@ Array.from(operationBtns).forEach(function (btn) {
 });
 
 clearBtn.addEventListener('click', clear);
+equalBtn.addEventListener('click', calculate);
