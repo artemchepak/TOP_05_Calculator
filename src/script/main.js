@@ -1,5 +1,3 @@
-//добавь кнопку equal и повесь на нее calculate
-
 const display = document.querySelector('#display');
 const digits = document.querySelectorAll('.digit');
 const clearBtn = document.querySelector('#clear');
@@ -69,8 +67,6 @@ function calculate() {
     if (firstNumber === undefined || secondNumber === undefined) {
         return;
     }
-
-    let result = '';
 
     switch (operation) {
         case 'divide':
