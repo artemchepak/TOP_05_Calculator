@@ -1,5 +1,6 @@
 const display = document.querySelector('#display');
 const digits = document.querySelectorAll('.digit');
+const decimalBtn = document.querySelector('#decimal');
 const clearBtn = document.querySelector('#clear');
 const operationBtns = document.querySelectorAll('.operation');
 const equalBtn = document.querySelector('#equals');
@@ -23,6 +24,7 @@ function updateDisplay(value) {
         }
     }
     display.innerHTML = displayText;
+    checkDecimalButton();
 }
 
 function getUserInput(key) {
@@ -61,6 +63,7 @@ function clear() {
     secondNumber = '';
     operation = undefined;
     newCalculation = false;
+    checkDecimalButton();
 }
 
 function backspace() {
@@ -76,6 +79,7 @@ function backspace() {
     } else {
         secondNumber = displayText;
     }
+    checkDecimalButton();
 }
 
 function calculate() {
@@ -102,8 +106,7 @@ function calculate() {
 
     if (result.toString().length > 15) {
         displayText = result.toString().substring(0, 12) + 'err';
-    }
-    else {
+    } else {
         displayText = result.toString();
     }
 
@@ -112,6 +115,15 @@ function calculate() {
     secondNumber = '';
     operation = undefined;
     newCalculation = true;
+    checkDecimalButton();
+}
+
+function checkDecimalButton() {
+    if (displayText.includes('.')) {
+        decimalBtn.disabled = true;
+    } else {
+        decimalBtn.disabled = false;
+    }
 }
 
 digits.forEach(btn => {
@@ -125,3 +137,13 @@ operationBtns.forEach(btn => {
 clearBtn.addEventListener('click', clear);
 backspaceBtn.addEventListener('click', backspace);
 equalBtn.addEventListener('click', calculate);
+
+// Decimal button event listener
+decimalBtn.addEventListener('click', event => {
+    if (!displayText.includes('.')) {
+        getUserInput(event.target);
+    }
+});
+
+// Initial check to set decimal button state
+checkDecimalButton();
